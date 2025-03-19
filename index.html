@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <!-- AngularJS CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body ng-app="expenseApp" ng-controller="ExpenseController as ctrl">
+    <div class="container mt-5">
+        <h2 class="text-center">Expense Tracker</h2>
+
+        <!-- Add New Expense -->
+        <div class="card p-4 mb-4">
+            <h4>Add New Expense</h4>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" ng-model="ctrl.newExpense.description" class="form-control" id="description" placeholder="e.g., Coffee">
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" ng-model="ctrl.newExpense.amount" class="form-control" id="amount" placeholder="e.g., 100">
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select ng-model="ctrl.newExpense.category" class="form-control" id="category">
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" ng-model="ctrl.newExpense.date" class="form-control" id="date">
+            </div>
+            <button class="btn btn-primary" ng-click="ctrl.addExpense()">Add Expense</button>
+        </div>
+
+        <!-- Expense Summary -->
+        <h4 class="mt-4">Expense Summary</h4>
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="filterCategory">Filter by Category:</label>
+                <select ng-model="ctrl.filterCategory" class="form-control" id="filterCategory">
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="filterStartDate">From:</label>
+                <input type="date" ng-model="ctrl.filterStartDate" class="form-control" id="filterStartDate">
+            </div>
+            <div class="col-md-4">
+                <label for="filterEndDate">To:</label>
+                <input type="date" ng-model="ctrl.filterEndDate" class="form-control" id="filterEndDate">
+            </div>
+        </div>
+
+        <!-- Expense Table -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="expense in ctrl.filteredExpenses()">
+                    <td>{{ expense.description }}</td>
+                    <td>{{ expense.amount | currency }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>{{ expense.date | date:'yyyy-MM-dd' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Total Expenses -->
+        <div class="mt-4">
+            <h5>Total Expenses: {{ ctrl.totalExpenses() | currency }}</h5>
+        </div>
+    </div>
+
+    <!-- AngularJS App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
